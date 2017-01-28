@@ -1,0 +1,41 @@
+{
+  "name": "courtbot-engine-data-courtbook",
+  "version": "1.0.0",
+  "description": "A data source for courtbot that pulls data from courtbook.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codefortulsa/courtbot-engine-data-courtbook.git"
+  },
+  "keywords": [
+    "courtbot",
+    "courtbook",
+    "data"
+  ],
+  "author": "Philip Kin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codefortulsa/courtbot-engine-data-courtbook/issues"
+  },
+  "homepage": "https://github.com/codefortulsa/courtbot-engine-data-courtbook#readme",
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-eslint": "^7.1.1",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-register": "^6.22.0",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chance": "^1.0.4",
+    "courtbot-engine": "^1.3.3",
+    "dirty-chai": "^1.2.2",
+    "eslint": "^3.14.1",
+    "express": "^4.14.0",
+    "mocha": "^3.2.0",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.17.7",
+    "sinon-chai": "^2.8.0"
+  }
+}
