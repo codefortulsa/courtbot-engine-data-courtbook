@@ -1,6 +1,6 @@
 import {events} from "courtbot-engine";
 
-events.on("add-routes", ({router, registrationSource}) => {
+events.on("add-routes", ({router, registrationSource, options}) => {
   router.post("/courtbook/register", (req,res) => {
 
     if(JSON.parse(process.env.API_TOKENS).filter(x => x == req.body.api_token).length == 0) {

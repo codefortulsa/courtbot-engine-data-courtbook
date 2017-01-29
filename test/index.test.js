@@ -30,8 +30,12 @@ describe("courtbook data", () => {
     let postStub;
     let registrationSource;
     let getRegistrationsByPhoneStub;
+    let courtbookUser; //do we need this?
+    let courtbookPassword; //or this?
 
     beforeEach(() => {
+      courtbookUser = chance.word();
+      courtbookPassword = chance.password();
       postStub = sandbox.stub();
       getRegistrationsByPhoneStub = sandbox.stub();
       registrationSource = {
@@ -40,7 +44,7 @@ describe("courtbook data", () => {
       router = {
         post: postStub
       };
-      eventOnStub.callsArgWith(1, {router, registrationSource});
+      eventOnStub.callsArgWith(1, {router, registrationSource, { courtbookUser, courtbookPassword } });
 
       proxyquire("../src/index.js", {
         "courtbot-engine": courtbot
