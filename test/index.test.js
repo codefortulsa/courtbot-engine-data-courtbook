@@ -20,7 +20,7 @@ describe("courtbook data", () => {
   it("hooks up to the add-routes event", () => {
     proxyquire("../src/index.js", {
       "courtbot-engine": courtbot
-    }).default("http://localhost");
+    })("http://localhost");
 
     expect(eventOnStub).to.have.been.calledWith("add-routes", sandbox.match.func);
   });
@@ -44,7 +44,7 @@ describe("courtbook data", () => {
 
       proxyquire("../src/index.js", {
         "courtbot-engine": courtbot
-      }).default("http://localhost");
+      })("http://localhost");
     });
 
     it("adds a /courtbook/register post route", () => {

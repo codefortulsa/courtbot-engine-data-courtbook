@@ -1,6 +1,6 @@
 import {events, sendNonReplyMessage, registrationState} from "courtbot-engine";
 
-export default function(courtbookUrl) {
+module.exports = exports = function(courtbookUrl) {
   events.on("add-routes", ({router, registrationSource}) => {
     router.post("/courtbook/register", (req,res) => {
 
@@ -66,4 +66,4 @@ export default function(courtbookUrl) {
       });
     }));
   });
-}
+};
