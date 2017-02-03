@@ -1,10 +1,12 @@
 import {events, sendNonReplyMessage, registrationState} from "courtbot-engine";
+import log4js from "log4js";
+const logger = log4js.getLogger("courtbook");
 
 module.exports = exports = function(courtbookUrl) {
   events.on("add-routes", ({router, registrationSource}) => {
     router.post("/courtbook/register", (req,res) => {
-
-      if(JSON.parse(process.env.API_TOKENS).filter(x => x == req.body.api_token).length == 0) {
+      if(!process.env.API_TOKENS || JSON.parse(process.env.API_TOKENS).filter(x => x == req.body.api_token).length == 0) {
+        logger.debug("Bad API token", req.body, process.env.API_TOKENS ? JSON.parse(process.env.API_TOKENS) : "no tokens" );
         res.end(JSON.stringify({
           success: false,
           message: "Invalid API token."
