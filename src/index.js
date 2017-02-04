@@ -6,6 +6,9 @@ module.exports = exports = function(courtbookUrl) {
   events.on("add-routes", ({router, registrationSource}) => {
     router.post("/courtbook/register", (req,res) => {
       if(!process.env.API_TOKENS || JSON.parse(process.env.API_TOKENS).filter(x => x == req.body.api_token).length == 0) {
+        logger.debug("###################");
+        logger.debug("req", req);
+        logger.debug("res", res);
         logger.debug("Bad API token", req.body, process.env.API_TOKENS ? JSON.parse(process.env.API_TOKENS) : "no tokens" );
         res.end(JSON.stringify({
           success: false,
