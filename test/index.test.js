@@ -70,7 +70,7 @@ describe("courtbook data", () => {
         res = {
           end: endStub
         };
-        var prom = new Promise(function(resolve, reject) {
+        var prom = new Promise(function(resolve) {
           getRegistrationResolver = resolve;
         });
         getRegistrationsByPhoneStub.returns(prom);

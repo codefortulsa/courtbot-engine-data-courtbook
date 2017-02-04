@@ -1,15 +1,16 @@
+import {Client} from 'node-rest-client';
 import {events, sendNonReplyMessage, registrationState} from "courtbot-engine";
 import log4js from "log4js";
+
 const logger = log4js.getLogger("courtbook");
 
+const client = new Client();
+
 module.exports = exports = function(courtbookUrl) {
-  events.on("add-routes", ({router, registrationSource}) => {
+  events.on("add-routes", ({router, registrationSource, messageSource}) => {
     router.post("/courtbook/register", (req,res) => {
       if(!process.env.API_TOKENS || JSON.parse(process.env.API_TOKENS).filter(x => x == req.body.api_token).length == 0) {
-        logger.debug("###################");
-        logger.debug("req", req);
-        logger.debug("res", res);
-        logger.debug("Bad API token", req.body, process.env.API_TOKENS ? JSON.parse(process.env.API_TOKENS) : "no tokens" );
+        logger.debug("Invalid API token.");
         res.end(JSON.stringify({
           success: false,
           message: "Invalid API token."
@@ -20,6 +21,7 @@ module.exports = exports = function(courtbookUrl) {
       registrationSource.getRegistrationsByContact(req.contact, req.communication_type).then(registrations => {
         const existing = registrations.filter(r => r.name == req.name && r.case_number == req.case_number && r.state != registrationState.UNSUBSCRIBED);
         if(existing.length > 1) {
+          logger.debug("User has an existing registration");
           res.end(JSON.stringify({
             success: false,
             message: "User has an existing registration"
@@ -62,7 +64,7 @@ module.exports = exports = function(courtbookUrl) {
 
   events.on("retrieve-party-events", (casenumber, party, result) => {
     result.promises.push(new Promise(function(resolve) {
-      client.get(`${oscnApiUrl}/v1/cases/cases/${casenumber}/defendant/${party}/events`, function(data) {
+      client.get(`${courtbookUrl}/v1/cases/cases/${casenumber}/defendant/${party}/events`, function(data) {
         if(data.length == 0) {
           //log.info(`No events found in courtbook for case number ${casenumber} and party ${party}`);
           resolve([]);
