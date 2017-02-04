@@ -4,7 +4,7 @@
   "description": "A data source for courtbot that pulls data from courtbook.",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "npm run lint && mocha",
     "test-watch": "mocha --watch",
     "build": "rm -rf lib && babel --presets es2015 src --out-dir lib",
     "release": "npm run test && npm run build  && release && npm publish",
@@ -42,5 +42,12 @@
     "proxyquire": "^1.7.10",
     "sinon": "^1.17.7",
     "sinon-chai": "^2.8.0"
+  },
+  "peerDependencies": {
+    "courtbot-engine": ">=1.4.10"
+  },
+  "dependencies": {
+    "log4js": "^1.1.0",
+    "node-rest-client": "^2.0.1"
   }
 }
