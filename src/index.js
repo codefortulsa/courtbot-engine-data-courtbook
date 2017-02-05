@@ -31,11 +31,11 @@ module.exports = exports = function(courtbookUrl) {
 
         registrationSource.createRegistration({
           contact: req.body.contact,
-          communication_type: req.body.conversation_type,
+          communication_type: req.body.communication_type,
           name: req.body.name,
           case_number: req.body.case_number,
           state: registrationState.ASKED_REMINDER
-        }).then(() => sendNonReplyMessage(req.body.contact, messageSource.remote(req.body.user, req.body.case_number, req.body.name)));
+        }).then(() => sendNonReplyMessage(req.body.contact, messageSource.remote(req.body.user, req.body.case_number, req.body.name), req.body.communication_type));
 
         res.end(JSON.stringify({
           success: true,
