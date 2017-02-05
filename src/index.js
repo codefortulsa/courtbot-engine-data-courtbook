@@ -31,7 +31,7 @@ module.exports = exports = function(courtbookUrl) {
 
         registrationSource.createRegistration({
           contact: req.body.contact,
-          communication_type: req.body.conversation_type,
+          communication_type: req.body.communication_type,
           name: req.body.name,
           case_number: req.body.case_number,
           state: registrationState.ASKED_REMINDER
