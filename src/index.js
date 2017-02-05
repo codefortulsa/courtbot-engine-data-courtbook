@@ -18,9 +18,9 @@ module.exports = exports = function(courtbookUrl) {
         return;
       }
 
-      registrationSource.getRegistrationsByContact(req.contact, req.communication_type).then(registrations => {
-        const existing = registrations.filter(r => r.name == req.name && r.case_number == req.case_number && r.state != registrationState.UNSUBSCRIBED);
-        if(existing.length > 1) {
+      registrationSource.getRegistrationsByContact(req.body.contact, req.body.communication_type).then(registrations => {
+        const existing = registrations.filter(r => r.name == req.body.name && r.case_number == req.body.case_number && r.state != registrationState.UNSUBSCRIBED);
+        if(existing.length > 0) {
           logger.debug("User has an existing registration");
           res.end(JSON.stringify({
             success: false,
@@ -29,20 +29,18 @@ module.exports = exports = function(courtbookUrl) {
           return;
         }
 
-        if(existing.length == 1) {
-          res.end(JSON.stringify({
-            success: true
-          }));
-          return;
-        }
-
         registrationSource.createRegistration({
-          contact: req.contact,
-          communication_type: req.conversation_type,
-          name: req.name,
-          case_number: req.case_number,
+          contact: req.body.contact,
+          communication_type: req.body.conversation_type,
+          name: req.body.name,
+          case_number: req.body.case_number,
           state: registrationState.ASKED_REMINDER
-        }).then(() => sendNonReplyMessage(req.contact, messageSource.remote(req.user, req.case_number, req.name)));
+        }).then(() => sendNonReplyMessage(req.body.contact, messageSource.remote(req.body.user, req.body.case_number, req.body.name)));
+
+        res.end(JSON.stringify({
+          success: true,
+          message: "Registration added"
+        }));
       });
     });
   });
