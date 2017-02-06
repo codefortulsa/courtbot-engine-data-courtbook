@@ -46,7 +46,7 @@ module.exports = exports = function(courtbookUrl) {
   });
 
   events.on("retrieve-parties", (casenumber, result) => {
-    const url = `${courtbookUrl}/v1/cases/caseNumber=${casenumber}`;
+    const url = `${courtbookUrl}/v1/cases?caseNumber=${casenumber}`;
     logger.debug(`Attempting to retrieve parties for casenumber ${casenumber}`);
     logger.debug(`using url: ${url}`)
     result.promises.push(new Promise(function(resolve) {
@@ -63,7 +63,7 @@ module.exports = exports = function(courtbookUrl) {
 
   events.on("retrieve-party-events", (casenumber, party, result) => {
     result.promises.push(new Promise(function(resolve) {
-      client.get(`${courtbookUrl}/v1/cases/cases/${casenumber}/defendant/${party}/events`, function(data) {
+      client.get(`${courtbookUrl}/v1/cases/${casenumber}/defendant/${party}/events`, function(data) {
         if(data.length == 0) {
           //log.info(`No events found in courtbook for case number ${casenumber} and party ${party}`);
           resolve([]);
