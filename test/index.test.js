@@ -55,7 +55,7 @@ describe("courtbook data", () => {
       let res;
       let req;
       let route;
-      let endStub;
+      let endStub, writeHead;
       let getRegistrationResolver;
       beforeEach(() => {
         req = {
@@ -67,8 +67,10 @@ describe("courtbook data", () => {
           }
         };
         endStub = sandbox.stub();
+        writeHead = sandbox.stub();
         res = {
-          end: endStub
+          end: endStub,
+          writeHead: writeHead
         };
         var prom = new Promise(function(resolve) {
           getRegistrationResolver = resolve;
