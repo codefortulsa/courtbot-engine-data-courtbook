@@ -47,12 +47,13 @@ module.exports = exports = function(courtbookUrl) {
 
   events.on("retrieve-parties", (casenumber, result) => {
     const url = `${courtbookUrl}/v1/cases/caseNumber=${casenumber}`;
-    //log.debug(`Attempting to retrieve parties for casenumber ${casenumber}`);
-    //log.debug(`using url: ${url}`)
+    logger.debug(`Attempting to retrieve parties for casenumber ${casenumber}`);
+    logger.debug(`using url: ${url}`)
     result.promises.push(new Promise(function(resolve) {
       client.get(url, function(data) {
+        logger.info("data returned:", data);
         if(!data || data.length == 0) {
-          //log.info(`No defendants found in courtbook for case number ${casenumber}`);
+          logger.info(`No defendants found in courtbook for case number ${casenumber}`);
           resolve([]);
         }
         resolve(data.map(x => x.defendant));
