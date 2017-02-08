@@ -55,17 +55,17 @@ module.exports = exports = function(courtbookUrl) {
       client.get(url, function(data) {
         logger.info("data returned:", data);
         if(!data || data.length == 0) {
-          logger.info(`No defendants found in courtbook for case number ${casenumber}`);
+          logger.info(`No parties found in courtbook for case number ${casenumber}`);
           resolve([]);
         }
-        resolve(data.map(x => x.defendant));
+        resolve(data.map(x => x.party));
       });
     }));
   });
 
   events.on("retrieve-party-events", (casenumber, party, result) => {
     result.promises.push(new Promise(function(resolve) {
-      client.get(`${courtbookUrl}/v1/cases/${casenumber}/defendant/${party}/events`, function(data) {
+      client.get(`${courtbookUrl}/v1/cases/${casenumber}/party/${party}/events`, function(data) {
         if(data.length == 0) {
           //log.info(`No events found in courtbook for case number ${casenumber} and party ${party}`);
           resolve([]);
