@@ -10,8 +10,16 @@ An environment variable must be defined with one or more API tokens. This token 
 
 From your instance of Courtbot, you just need to register this Courtbot extension. The Courtbook URL must be your the host followed by `/rest`, e.g., `https://courtbook:5000/rest`.
 
-```
+```javascript
 import courtbookData from 'courtbot-engine-data-courtbook';
 
-courtbookData("https://courtbook/rest");
+courtbookData({
+	courtbookUrl: "https://courtbook/rest",
+	oauthConfig: {
+		tokenUrl: "https://oauth-provider/url",
+       audience: "https://oauth-provider/audience",
+       clientId: "<client_id>",
+       clientSecret: "<client_secret>"
+	}
+});
 ```
