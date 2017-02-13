@@ -1,7 +1,6 @@
 import CourtbookApi from "./courtbook-api";
 import {events, sendNonReplyMessage, registrationState} from "courtbot-engine";
 import log4js from "log4js";
-import validator from 'validator';
 
 const logger = log4js.getLogger("courtbook");
 
