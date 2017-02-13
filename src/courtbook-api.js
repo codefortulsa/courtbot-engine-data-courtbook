@@ -22,7 +22,7 @@ class CourtbookApi {
                 const args = {
                     headers: {"Authentication": `Bearer ${token}`}
                 };
-                client.get(`${this._baseUrl}/v1/cases/${caseNumber}/party/${party}/events`, args, (data) => {
+                client.get(`${this._baseUrl}/rest/v1/cases/${caseNumber}/party/${party}/events`, args, (data) => {
                     log.trace(`Events for case ${caseNumber} and party ${party}: `, data);
                     resolve(data);
                 }).on("error", (error) => {
@@ -40,7 +40,7 @@ class CourtbookApi {
                 const args = {
                     headers: {"Authentication": `Bearer ${token}`}
                 };
-                client.get(`${this._baseUrl}/v1/cases?caseNumber=${caseNumber}`, args,
+                client.get(`${this._baseUrl}/rest/v1/cases?caseNumber=${caseNumber}`, args,
                     (data) => {
                         log.trace(`Found cases for case ${caseNumber}:`, data);
                         resolve(data.map(courtCase => courtCase.party));

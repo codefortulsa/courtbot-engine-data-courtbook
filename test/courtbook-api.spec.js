@@ -4,7 +4,7 @@ import setup from "./setup";
 describe("courtbook-api", () => {
     const {expect, chance, sandbox} = setup();
 
-    const courtbookUrl = "https://agile-tundra-30598.herokuapp.com/rest";
+    const courtbookUrl = "https://agile-tundra-30598.herokuapp.com";
     const oauthConfig = {
         tokenUrl: chance.url(),
         audience: chance.url(),
@@ -47,7 +47,7 @@ describe("courtbook-api", () => {
                 .then(() => {
                     expect(clientCredentialsBearerToken).to.have.been.calledWith(oauthConfig);
                     expect(Client.prototype.get).to.be.calledWith(
-                        `${courtbookUrl}/v1/cases/${caseNumber}/party/${party}/events`,
+                        `${courtbookUrl}/rest/v1/cases/${caseNumber}/party/${party}/events`,
                         {headers: {Authentication: `Bearer ${token}`}},
                         sandbox.match.func
                     );
@@ -81,7 +81,7 @@ describe("courtbook-api", () => {
                 .then(() => {
                     expect(clientCredentialsBearerToken).to.have.been.calledWith(oauthConfig);
                     expect(Client.prototype.get).to.be.calledWith(
-                        `${courtbookUrl}/v1/cases?caseNumber=${caseNumber}`,
+                        `${courtbookUrl}/rest/v1/cases?caseNumber=${caseNumber}`,
                         {headers: {Authentication: `Bearer ${token}`}},
                         sandbox.match.func
                     );
