@@ -23,8 +23,13 @@ class CourtbookApi {
                     headers: {"Authentication": `Bearer ${token}`}
                 };
                 client.get(`${this._baseUrl}/rest/v1/cases/${caseNumber}/party/${party}/events`, args, (data) => {
-                    log.trace(`Events for case ${caseNumber} and party ${party}: `, data);
-                    resolve(data);
+                    try{
+                      const jsonData = JSON.parse(data.toString("utf8"));
+                      log.trace(`Events for case ${caseNumber} and party ${party}: `, jsonData);
+                      resolve(jsonData);
+                    }catch (e){
+                      log.error("Error parsing case data", data.toString("utf8"), e);
+                    }
                 }).on("error", (error) => {
                     log.error(`Failed to get events for case ${caseNumber} and party ${party}: `, error);
                     reject(new Error(`Failed to get events for case ${caseNumber} and party ${party}.`))
@@ -36,14 +41,20 @@ class CourtbookApi {
     getParties(caseNumber) {
         log.trace(`Getting parties for case ${caseNumber}...`);
         return this._getBearerToken().then(token => {
+            log.trace("Bearer token:", token);
             return new Promise((resolve, reject) => {
                 const args = {
                     headers: {"Authentication": `Bearer ${token}`}
                 };
                 client.get(`${this._baseUrl}/rest/v1/cases?caseNumber=${caseNumber}`, args,
                     (data) => {
-                        log.trace(`Found cases for case ${caseNumber}:`, data);
-                        resolve(data.map(courtCase => courtCase.party));
+                        try{
+                          const jsonData = JSON.parse(data.toString("utf8"));
+                          log.trace(`Found cases for case ${caseNumber}:`, jsonData);
+                          resolve(jsonData.map(courtCase => courtCase.party));
+                        }catch (e){
+                          log.error("Error parsing party data", data.toString("utf8"), e);
+                        }
                     }).on("error", (error) => {
                         log.error(`Failed to get parties for case ${caseNumber}`, error);
                         reject(new Error(`Failed to get parties for case ${caseNumber}.`));

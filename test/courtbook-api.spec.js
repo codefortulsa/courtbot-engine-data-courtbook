@@ -34,11 +34,11 @@ describe("courtbook-api", () => {
     describe("getEvents", () => {
         it("should resolve with events", () => {
             const expectedEvents = chance.n(() => ({
-                date: chance.date(),
+                date: chance.date().toString(),
                 description: chance.sentence()
             }), 3);
 
-            Client.prototype.get = sandbox.spy((url, data, cb) => cb(expectedEvents));
+            Client.prototype.get = sandbox.spy((url, data, cb) => cb(new Buffer(JSON.stringify(expectedEvents))));
 
             const promise = courtbookApi.getEvents(caseNumber, party);
 
@@ -72,7 +72,7 @@ describe("courtbook-api", () => {
                 party: chance.name()
             }), 3);
 
-            Client.prototype.get = sandbox.spy((url, data, cb) => cb(cases));
+            Client.prototype.get = sandbox.spy((url, data, cb) => cb(new Buffer(JSON.stringify(cases))));
 
             const promise = courtbookApi.getParties(caseNumber, party);
 

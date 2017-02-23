@@ -19,4 +19,3 @@ export const clientCredentialsBearerToken = ({tokenUrl, audience, clientId, clie
         ).on("error", () => reject(new Error("Failed to get auth token")));
     });
 };
-
