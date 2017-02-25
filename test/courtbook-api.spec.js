@@ -47,8 +47,8 @@ describe("courtbook-api", () => {
                 .then(() => {
                     expect(clientCredentialsBearerToken).to.have.been.calledWith(oauthConfig);
                     expect(Client.prototype.get).to.be.calledWith(
-                        `${courtbookUrl}/rest/v1/cases/${caseNumber}/party/${party}/events`,
-                        {headers: {Authentication: `Bearer ${token}`}},
+                        `${courtbookUrl}/api/v1/cases/${caseNumber}/party/${party}/events`,
+                        {headers: {Authorization: `Bearer ${token}`}},
                         sandbox.match.func
                     );
                 });
@@ -81,8 +81,8 @@ describe("courtbook-api", () => {
                 .then(() => {
                     expect(clientCredentialsBearerToken).to.have.been.calledWith(oauthConfig);
                     expect(Client.prototype.get).to.be.calledWith(
-                        `${courtbookUrl}/rest/v1/cases?caseNumber=${caseNumber}`,
-                        {headers: {Authentication: `Bearer ${token}`}},
+                        `${courtbookUrl}/api/v1/cases?caseNumber=${caseNumber}`,
+                        {headers: {Authorization: `Bearer ${token}`}},
                         sandbox.match.func
                     );
                 });
