@@ -16,13 +16,14 @@ class CourtbookApi {
     }
 
     getEvents(caseNumber, party) {
-        log.trace(`Getting events for case ${caseNumber} and party ${party}...`);
+        const url = `${this._baseUrl}/api/v1/cases/${caseNumber}/party/${party}/events`;
+        log.debug(`Getting events for case ${caseNumber} and party ${party} from URL ${url}`);
         return this._getBearerToken().then(token => {
             return new Promise((resolve, reject) => {
                 const args = {
-                    headers: {"Authentication": `Bearer ${token}`}
+                    headers: {"Authorization": `Bearer ${token}`}
                 };
-                client.get(`${this._baseUrl}/rest/v1/cases/${caseNumber}/party/${party}/events`, args, (data) => {
+                client.get(url, args, (data) => {
                     log.trace(`Events for case ${caseNumber} and party ${party}: `, data);
                     resolve(data);
                 }).on("error", (error) => {
@@ -34,19 +35,19 @@ class CourtbookApi {
     }
 
     getParties(caseNumber) {
-        log.trace(`Getting parties for case ${caseNumber}...`);
+        log.debug(`Getting parties for case ${caseNumber}...`);
         return this._getBearerToken().then(token => {
             return new Promise((resolve, reject) => {
                 const args = {
-                    headers: {"Authentication": `Bearer ${token}`}
+                    headers: {"Authorization": `Bearer ${token}`}
                 };
-                client.get(`${this._baseUrl}/rest/v1/cases?caseNumber=${caseNumber}`, args,
+                client.get(`${this._baseUrl}/api/v1/cases?caseNumber=${caseNumber}`, args,
                     (data) => {
                         log.trace(`Found cases for case ${caseNumber}:`, data);
                         resolve(data.map(courtCase => courtCase.party));
                     }).on("error", (error) => {
-                        log.error(`Failed to get parties for case ${caseNumber}`, error);
-                        reject(new Error(`Failed to get parties for case ${caseNumber}.`));
+                    log.error(`Failed to get parties for case ${caseNumber}`, error);
+                    reject(new Error(`Failed to get parties for case ${caseNumber}.`));
                 });
             });
         });
