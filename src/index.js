@@ -48,7 +48,7 @@ module.exports = exports = function ({courtbookUrl, oauthConfig}) {
                 }));
             }))
             .catch(err => {
-              logger.debug("Invalid phone number");
+              logger.debug("Invalid phone number", err);
               res.writeHead(401, {'Content-Type': 'application/json'});
               res.end(JSON.stringify({
                   success: false,
