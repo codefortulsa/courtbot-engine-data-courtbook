@@ -35,7 +35,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "chance": "^1.0.4",
-    "courtbot-engine": "^1.4.10",
+    "courtbot-engine": "^1.6.8",
     "coveralls": "^2.11.16",
     "dirty-chai": "^1.2.2",
     "eslint": "^3.14.1",
@@ -49,7 +49,7 @@
     "sinon-chai": "^2.8.0"
   },
   "peerDependencies": {
-    "courtbot-engine": ">=1.4.10"
+    "courtbot-engine": ">=1.6.8"
   },
   "dependencies": {
     "log4js": "^1.1.0",
