@@ -11,9 +11,11 @@ describe("courtbot-engine-data-courtbook index", () => {
 
     let courtbot;
     let eventOnStub;
+    let verifyContactStub;
 
     beforeEach(() => {
         eventOnStub = sandbox.stub();
+        verifyContactStub = sandbox.stub();
         courtbot = {
             events: {
                 on: eventOnStub
@@ -46,6 +48,7 @@ describe("courtbot-engine-data-courtbook index", () => {
             };
             eventOnStub.onCall(0).callsArgWith(1, {router, registrationSource});
 
+            courtbot.verifyContact = verifyContactStub;
             proxyquire("../src/index.js", {
                 "courtbot-engine": courtbot
             })("http://localhost");
@@ -66,10 +69,12 @@ describe("courtbot-engine-data-courtbook index", () => {
                     body: {
                         api_token: chance.guid(),
                         name: chance.name(),
-                        phone: chance.phone(),
+                        contact: chance.phone(),
+                        communication_type: "sms",
                         casenumber: "CF-" + chance.year() + "-" + chance.integer({min: 1000, max: 10000})
                     }
                 };
+                verifyContactStub.returns(Promise.resolve(req.body.contact));
                 endStub = sandbox.stub();
                 writeHead = sandbox.stub();
                 res = {
@@ -96,8 +101,14 @@ describe("courtbot-engine-data-courtbook index", () => {
             it("gets the current registrations if the api token is valid", () => {
                 process.env.API_TOKENS = JSON.stringify([req.body.api_token]);
                 route(req, res);
-                expect(res.end).not.to.have.been.called();
-                expect(getRegistrationsByPhoneStub).to.have.been.called();
+
+                return new Promise(function(resolve) {
+                  setTimeout(function() {
+                    expect(res.end).not.to.have.been.called();
+                    expect(getRegistrationsByPhoneStub).to.have.been.called();
+                    resolve();
+                  }, 0);
+                });
             });
 
             it("returns success if the user is already registerd for that case/phone", () => {
