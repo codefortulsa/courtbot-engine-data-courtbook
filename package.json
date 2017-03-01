@@ -1,6 +1,6 @@
 {
   "name": "courtbot-engine-data-courtbook",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A data source for courtbot that pulls data from courtbook.",
   "main": "lib/index.js",
   "scripts": {
