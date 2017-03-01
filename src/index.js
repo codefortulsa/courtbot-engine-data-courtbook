@@ -1,5 +1,5 @@
 import CourtbookApi from "./courtbook-api";
-import {events, sendNonReplyMessage, registrationState, verifyContact} from "courtbot-engine";
+import {events, sendNonReplyMessage, registrationState, verifyContact, messaging} from "courtbot-engine";
 import log4js from "log4js";
 
 const logger = log4js.getLogger("courtbook");
@@ -9,10 +9,10 @@ module.exports = exports = function ({courtbookUrl, oauthConfig}) {
         courtbookUrl, oauthConfig
     });
 
-    events.on("add-routes", ({router, registrationSource, messageSource}) => {
+    events.on("add-routes", ({router, registrationSource}) => {
         router.post("/courtbook/register", (req, res) => {
             if (!process.env.API_TOKENS || JSON.parse(process.env.API_TOKENS).filter(x => x == req.body.api_token).length == 0) {
-                logger.debug("Invalid API token.");
+                logger.debug("Invalid API token.", req.body);
                 res.writeHead(401, {'Content-Type': 'application/json'});
                 res.end(JSON.stringify({
                     success: false,
@@ -40,7 +40,7 @@ module.exports = exports = function ({courtbookUrl, oauthConfig}) {
                     name: req.body.name,
                     case_number: req.body.case_number,
                     state: registrationState.ASKED_REMINDER
-                }).then(() => sendNonReplyMessage(contact, messageSource.remote(req.body.user, req.body.case_number, req.body.name), req.body.communication_type));
+                }).then(() => sendNonReplyMessage(contact, messaging.remote(req.body.user, req.body.case_number, req.body.name), req.body.communication_type));
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 res.end(JSON.stringify({
                     success: true,
