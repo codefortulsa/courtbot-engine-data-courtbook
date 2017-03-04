@@ -34,18 +34,21 @@ module.exports = exports = function ({courtbookUrl, oauthConfig}) {
                     return;
                 }
 
-                registrationSource.createRegistration({
+                return registrationSource.createRegistration({
                     contact,
                     communication_type: req.body.communication_type,
                     name: req.body.name,
                     case_number: req.body.case_number,
                     state: registrationState.ASKED_REMINDER
-                }).then(() => sendNonReplyMessage(contact, messaging.remote(req.body.user, req.body.case_number, req.body.name), req.body.communication_type));
-                res.writeHead(200, {'Content-Type': 'application/json'});
-                res.end(JSON.stringify({
-                    success: true,
-                    message: "Registration added"
-                }));
+                }).then(() => sendNonReplyMessage(contact, messaging.remote(req.body.user, req.body.case_number, req.body.name), req.body.communication_type))
+                .then(() => {
+                  res.writeHead(200, {'Content-Type': 'application/json'});
+                  res.end(JSON.stringify({
+                      success: true,
+                      message: "Registration added",
+                      verifiedContact: contact
+                  }));
+                });
             }))
             .catch(err => {
               logger.debug("Invalid phone number", err);

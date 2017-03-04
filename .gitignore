@@ -44,3 +44,4 @@ jspm_packages
 public/bundle.js
 lib
 test.js
+*.tgz
