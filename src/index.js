@@ -10,6 +10,27 @@ module.exports = exports = function ({courtbookUrl, oauthConfig}) {
     });
 
     events.on("add-routes", ({router, registrationSource}) => {
+        router.get("/courtbook/messageLog/:casenumber/:communicationtype/:contact", (req, res) => {
+            if (!process.env.API_TOKENS || JSON.parse(process.env.API_TOKENS).filter(x => x == req.query.api_token).length == 0) {
+                logger.debug("Invalid API token.", req.body);
+                res.writeHead(401, {'Content-Type': 'application/json'});
+                res.end(JSON.stringify({
+                    success: false,
+                    message: "Invalid API token."
+                }));
+                return;
+            }
+
+            verifyContact(req.params.contact, req.params.communicationtype).then(contact =>
+                registrationSource.getSentMessages(contact, req.params.casenumber).then(msgs => {
+                    res.writeHead(200, {'Content-Type': 'application/json'});
+                    res.end(JSON.stringify({
+                        success: true,
+                        messages: msgs
+                    }));
+                })
+            );
+        });
         router.post("/courtbook/register", (req, res) => {
             if (!process.env.API_TOKENS || JSON.parse(process.env.API_TOKENS).filter(x => x == req.body.api_token).length == 0) {
                 logger.debug("Invalid API token.", req.body);
