@@ -34,17 +34,20 @@ describe("courtbot-engine-data-courtbook index", () => {
     describe("add-routes event", () => {
         let router;
         let postStub;
+        let getStub;
         let registrationSource;
         let getRegistrationsByPhoneStub;
 
         beforeEach(() => {
+            getStub = sandbox.stub();
             postStub = sandbox.stub();
             getRegistrationsByPhoneStub = sandbox.stub();
             registrationSource = {
                 getRegistrationsByContact: getRegistrationsByPhoneStub
             };
             router = {
-                post: postStub
+                post: postStub,
+                get: getStub
             };
             eventOnStub.onCall(0).callsArgWith(1, {router, registrationSource});
 
